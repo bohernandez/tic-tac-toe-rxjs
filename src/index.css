@@ -1,0 +1,54 @@
+.game-container{
+  max-width: 500px;
+  min-height: 500px;
+  display: block;
+  margin: 0 auto;
+  background: #483C37;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.results-block{
+  max-width: 500px;
+}
+
+.title_princ{
+  color: #D5D4CD;
+}
+
+
+.cell_box {
+  color: #D5D4CD;
+  font-family: monospace;
+  text-align: center;
+  line-height: 125px;
+  font-size: 100px;
+  float: left;
+  width: 150px;
+  height: 150px;
+  background-color: #D3794F;
+  margin: 3px;
+  cursor: pointer;
+}
+
+.reset {
+  width: 250px;
+  height: 35px;
+  border-radius: 8px;
+  background-color: #626A70;
+  float: clear;
+  margin: 450px auto 0px;
+  line-height: 35px;
+  text-align: center;
+  color: #D5D4CD;
+}
+.results-block{
+  background: #483C37;
+  color: #D3794F;
+}
+
+.input_name{
+  border: none;
+  background: #483C37;
+  color: #D3794F;
+}
