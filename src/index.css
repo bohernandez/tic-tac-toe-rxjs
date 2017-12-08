@@ -1,5 +1,5 @@
 .game-container{
-  max-width: 500px;
+  max-width: 500px !important;
   min-height: 500px;
   display: block;
   margin: 0 auto;
@@ -9,7 +9,7 @@
 }
 
 .results-block{
-  max-width: 500px;
+  max-width: 500px !important;
 }
 
 .title_princ{
