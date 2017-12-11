@@ -109,6 +109,11 @@ export default class board extends Component {
     }
 
     render() {
+      let container = {
+        maxWidth: (Math.sqrt(this.props.size) * 156) + 30,
+        height: (Math.sqrt(this.props.size) * 158) + 200,
+        position: 'relative',
+      }
       const { message } = this.state;
       const playerInfo = message ? message : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       const transitionSettings = {
@@ -119,7 +124,7 @@ export default class board extends Component {
         transitionAppearTimeout: 500,
       };
         return(
-            <div className="container game-container">
+            <div className="container game-container" style={container}>
               <h1 className="title">Tic Tac Toe</h1>
               <div style={{ color: 'white' }}>{playerInfo}</div>
               <CSSTransitionGroup {...transitionSettings}> 
@@ -127,9 +132,6 @@ export default class board extends Component {
                   <Cell key={i} value={x} onClick={() => { this.changeValue(i)} }></Cell>
                 )}
               </CSSTransitionGroup>
-              <br/>
-              <br />
-              <br />
             <div className="reset" onClick={ ()=>{ this.resetBoard()} }>Reset</div>
           </div>
         );

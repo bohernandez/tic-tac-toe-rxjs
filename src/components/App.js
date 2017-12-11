@@ -9,7 +9,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Board size={9} />
+        <Board size={25} />
       </div>
     );
   }
