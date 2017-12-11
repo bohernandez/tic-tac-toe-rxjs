@@ -12,7 +12,7 @@ export default class board extends Component {
           stepNumber: 0,
           xIsNext: true,
           squares: [...Array(props.size)].fill(null),
-          message: 'default',
+          message: '',
           solutions: [],
         };
     };
@@ -77,37 +77,46 @@ export default class board extends Component {
     }
 
     changeValue(i) {
+      const currentPlayer = this.state.xIsNext ? 'x' : 'o';
+      let { stepNumber, total } = this.state;
       const squares  = this.state.squares.slice();
       
       if(squares[i] === 'x' || squares[i] === 'o' ) {
         return
       }
       squares[i] = this.state.xIsNext ? 'x' : 'o';
-      
+      stepNumber++;
       let verify = this.verifyWiner(squares);
 
       this.setState({
         squares: squares,
         xIsNext: !this.state.xIsNext,
+        stepNumber,
       });
-      
-      this.setState({ message: verify ? 'winner' : 'Nope'   })
+      if (stepNumber >= total && !verify) {
+        this.setState({ message: "Draw"  });  
+      } else {
+        this.setState({ message: verify ? currentPlayer + " Won!" : ''  });
+      }
     }
 
     resetBoard() {
       this.setState({
         squares: [...Array(this.props.size)].fill(null),
+        message: '',
+        stepNumber: 0,
       });
     }
 
     render() {
-      const playerInfo = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      const { message } = this.state;
+      const playerInfo = message ? message : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       const transitionSettings = {
         transitionName: "fade",
         transitionEnterTimeout: 500,
         transitionLeaveTimeout: 500,
         transitionAppear: true,
-        transitionAppearTimeout: 10000,
+        transitionAppearTimeout: 500,
       };
         return(
             <div className="container game-container">
@@ -122,7 +131,6 @@ export default class board extends Component {
               <br />
               <br />
             <div className="reset" onClick={ ()=>{ this.resetBoard()} }>Reset</div>
-            <div>{this.state.message}</div>
           </div>
         );
     }
