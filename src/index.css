@@ -12,12 +12,12 @@
   max-width: 500px !important;
 }
 
-.title_princ{
+.title{
   color: #D5D4CD;
 }
 
 
-.cell_box {
+.cell-box {
   color: #D5D4CD;
   font-family: monospace;
   text-align: center;
@@ -51,4 +51,21 @@
   border: none;
   background: #483C37;
   color: #D3794F;
+}
+
+/* Initial point to animation */
+.fade-appear {
+  transform: rotateX(90deg) rotateZ(90deg);
+  opacity: 0.1;
+}
+
+/* End of animation */
+.fade-appear.fade-appear-active {
+  transform: rotateX(0deg) rotateZ(0deg);
+  opacity: 1.0;
+  transition: .5s ease-in all;
+}
+
+.fade-leave {
+  opacity: 1.0;
 }

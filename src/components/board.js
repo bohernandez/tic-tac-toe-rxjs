@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Cell from './cell';
 import _ from 'lodash';
+import { CSSTransitionGroup } from 'react-transition-group';
 
 export default class board extends Component {
 
@@ -11,8 +12,69 @@ export default class board extends Component {
           stepNumber: 0,
           xIsNext: true,
           squares: [...Array(props.size)].fill(null),
+          message: 'default',
+          solutions: [],
         };
     };
+    componentDidMount() {
+      const solutions = this.getSolutionsMatrix();
+      this.setState({solutions});
+      console.log(solutions);
+    }
+
+    getSolutionsMatrix() {
+      const boardSize = this.props.size;
+      const n = Math.sqrt(boardSize);
+      const boardRange = _.range(n);
+      const { squares } = this.state;
+      console.log("squares", squares);
+
+      let rows = boardRange.map(value => {
+        // value * n => Display the values of the first col
+        //  (value * n) + n => Take the values of the last col
+        return _.range(value * n, (value * n) + n);
+      });
+      // console.log(rows);
+
+      let cols = boardRange.map(value => {
+        // value * n => Display the values of the first col
+        //  (value * n) + n => Take the values of the last col
+        return _.range(value, boardSize, n);
+      });
+      // console.log(cols);
+
+      let diag = boardRange.map(value => {
+        // value * n => Display the values of the first col
+        //  (value * n) + n => Take the values of the last col
+        return (value * n) + value;
+      });
+      // console.log(diag);
+
+      let diagInv = boardRange.map(value => {
+        // value * n => Display the values of the first col
+        //  (value * n) + n => Take the values of the last col
+        return (value * n) + (n - 1) - value;
+      });
+      // console.log(diagInv);
+
+      const solutionsMatrix = [
+        ...rows,
+        ...cols,
+        diag,
+        diagInv
+      ];
+
+      return solutionsMatrix;
+    }
+
+    verifyWiner(squares) {
+      const { solutions } = this.state;
+      const currentPlayer = this.state.xIsNext ? 'x' : 'o';
+
+      return solutions.find(hand => (
+        hand.every(index => squares[index] === currentPlayer)
+      ));
+    }
 
     changeValue(i) {
       const squares  = this.state.squares.slice();
@@ -21,11 +83,15 @@ export default class board extends Component {
         return
       }
       squares[i] = this.state.xIsNext ? 'x' : 'o';
+      
+      let verify = this.verifyWiner(squares);
 
       this.setState({
         squares: squares,
         xIsNext: !this.state.xIsNext,
       });
+      
+      this.setState({ message: verify ? 'winner' : 'Nope'   })
     }
 
     resetBoard() {
@@ -34,54 +100,29 @@ export default class board extends Component {
       });
     }
 
-    verifyWiner() {
-      const boardSize = this.props.size;
-      const n = Math.sqrt(boardSize);
-      const boardRange = _.range(n);
-
-      let rows = boardRange.map(value => {
-        // value * n => Display the values of the first col
-        //  (value * n) + n => Take the values of the last col
-        return _.range(value * n, (value * n) + n);
-      });
-      console.log(rows);
-
-      let cols = boardRange.map(value => {
-        // value * n => Display the values of the first col
-        //  (value * n) + n => Take the values of the last col
-        return _.range(value, boardSize, n);
-      });
-      console.log(cols);
-
-      let diag = boardRange.map(value => {
-        // value * n => Display the values of the first col
-        //  (value * n) + n => Take the values of the last col
-        return (value * n) + value;
-      });
-      console.log(diag);
-
-      let diagInv = boardRange.map(value => {
-        // value * n => Display the values of the first col
-        //  (value * n) + n => Take the values of the last col
-        return (value * n) + (n - 1) - value;
-      });
-      console.log(diagInv);
-    }
-
     render() {
       const playerInfo = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      const transitionSettings = {
+        transitionName: "fade",
+        transitionEnterTimeout: 500,
+        transitionLeaveTimeout: 500,
+        transitionAppear: true,
+        transitionAppearTimeout: 10000,
+      };
         return(
             <div className="container game-container">
-              <h1 className="title_princ">Tic Tac Toe</h1>
+              <h1 className="title">Tic Tac Toe</h1>
               <div style={{ color: 'white' }}>{playerInfo}</div>
-              {this.state.squares.map((x, i) =>
-                <Cell key={i} value={x} onClick={() => { this.changeValue(i)} }></Cell>
-              )}
+              <CSSTransitionGroup {...transitionSettings}> 
+                {this.state.squares.map((x, i) => 
+                  <Cell key={i} value={x} onClick={() => { this.changeValue(i)} }></Cell>
+                )}
+              </CSSTransitionGroup>
               <br/>
               <br />
               <br />
             <div className="reset" onClick={ ()=>{ this.resetBoard()} }>Reset</div>
-            <div onClick={ ()=>{ this.verifyWiner()} }>Verify</div>
+            <div>{this.state.message}</div>
           </div>
         );
     }
