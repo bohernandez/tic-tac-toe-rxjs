@@ -1,6 +1,6 @@
 .game-container{
-  max-width: 500px;
   min-height: 500px;
+  height: auto;
   display: block;
   margin: 0 auto;
   background: #483C37;
@@ -8,16 +8,12 @@
   padding-bottom: 25px;
 }
 
-.results-block{
-  max-width: 500px;
-}
-
-.title_princ{
+.title{
   color: #D5D4CD;
 }
 
 
-.cell_box {
+.cell-box {
   color: #D5D4CD;
   font-family: monospace;
   text-align: center;
@@ -36,11 +32,15 @@
   height: 35px;
   border-radius: 8px;
   background-color: #626A70;
-  float: clear;
-  margin: 450px auto 0px;
   line-height: 35px;
   text-align: center;
   color: #D5D4CD;
+  cursor: pointer;
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: 30px;
 }
 .results-block{
   background: #483C37;
@@ -51,4 +51,21 @@
   border: none;
   background: #483C37;
   color: #D3794F;
+}
+
+/* Initial point to animation */
+.fade-appear {
+  transform: rotateX(90deg) rotateZ(90deg);
+  opacity: 0.1;
+}
+
+/* End of animation */
+.fade-appear.fade-appear-active {
+  transform: rotateX(0deg) rotateZ(0deg);
+  opacity: 1.0;
+  transition: .5s ease-in all;
+}
+
+.fade-leave {
+  opacity: 1.0;
 }
